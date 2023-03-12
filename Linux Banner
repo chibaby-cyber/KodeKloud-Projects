@@ -1,0 +1,16 @@
+During the monthly compliance meeting, it was pointed out that several servers in the Stratos DC do not have a valid banner. 
+The security team has provided serveral approved templates which should be applied to the servers to maintain compliance. 
+These will be displayed to the user upon a successful login.
+
+Update the message of the day on all application and db servers for Nautilus. 
+Make use of the approved template located at /home/thor/nautilus_banner on jump host
+
+Steps
+scp /home/thor/nautilus_banner tony@172.16.238.10:/home/tony
+sudo mv /home/tony/nautilus_banner /etc/motd
+scp /home/thor/nautilus_banner steve@172.16.238.11:/home/steve
+sudo mv /home/steve/nautilus_banner /etc/motd
+scp /home/thor/nautilus_banner banner@172.16.238.12:/home/banner
+sudo mv /home/banner/nautilus_banner /etc/motd
+scp /home/thor/nautilus_banner peter@172.16.239.10:/home/peter
+sudo mv /home/peter/nautilus_banner /etc/motd
