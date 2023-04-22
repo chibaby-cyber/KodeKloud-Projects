@@ -1,0 +1,44 @@
+xFusionCorp Industries has planned to set up a common email server in Stork DC. After several meetings and recommendations they have decided to use postfix as their mail transfer agent and dovecot as an IMAP/POP3 server. We would like you to perform the following steps:
+
+
+
+Install and configure postfix on Stork DC mail server.
+
+Create an email account kirsty@stratos.xfusioncorp.com identified by B4zNgHA7Ya.
+
+Set its mail directory to /home/kirsty/Maildir.
+
+Install and configure dovecot on the same server.
+
+Solution
+ssh into mail server
+sudo yum install postfix -y
+sudo systemctl status postfix.service
+sudo vi /etc/postfix/main.cf
+
+do the required configuration
+sudo systemctl start postfix.service
+sudo systemctl status postfix.service
+sudo useradd kirsty
+sudo passwd kirsty
+telnet stmail01 25 #test postfix with telnet
+sudo yum install dovecot
+
+sudo vi /etc/dovecot/dovecot.conf
+protocols = imap pop3 lmtp
+listen = *, :: 
+
+sudo vi /etc/dovecot/conf.d/10-mail.conf
+mail_location = maildir:~/Maildir
+
+sudo vi /etc/dovecot/conf.d/10-master.conf
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+  }
+  sudo vi /etc/dovecot/conf.d/10-auth.conf
+  sudo systemctl enable dovecot
+  sudo systemctl start dovecot
+  sudo systemctl status dovecot
+  telnet stmail01 110
