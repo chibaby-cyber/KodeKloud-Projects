@@ -1,0 +1,61 @@
+Some of the developers from Nautilus project team have asked for SFTP access to at least one of the app server in Stratos DC. After going through the requirements, the system admins team has decided to configure the SFTP server on App Server 3 server in Stratos Datacenter. Please configure it as per the following instructions:
+
+
+
+a. Create an SFTP user javed and set its password to 8FmzjvFU6S.
+
+b. Password authentication should be enabled for this user.
+
+c. Set its ChrootDirectory to /var/www/nfsdata.
+
+d. SFTP user should only be allowed to make SFTP connections.
+
+Solution
+ssh into server
+sudo su
+useradd javed
+passwd javed
+mkdir -p /var/www/nfsshare
+chown root:root  /var/www
+ vi /etc/ssh/sshd_config
+ 
+ Add lines to file
+ Match User javed
+ForceCommand internal-sftp
+PasswordAuthentication yes
+ChrootDirectory /var/www/
+PermitTunnel no
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+
+cat /etc/ssh/sshd_config | grep -v -e '^#' -e '^$'
+
+make sure output looks like this
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+SyslogFacility AUTHPRIV
+AuthorizedKeysFile      .ssh/authorized_keys
+PasswordAuthentication yes
+ChallengeResponseAuthentication no
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials no
+UsePAM no
+X11Forwarding yes
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+Subsystem       sftp    /usr/libexec/openssh/sftp-server
+Match User javed
+ForceCommand internal-sftp
+PasswordAuthentication yes
+ChrootDirectory /var/www/
+PermitTunnel no
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+
+systemctl restart sshd
+systemctl status sshd
