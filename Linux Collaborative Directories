@@ -4,6 +4,6 @@ The directory should be group owned by the group devops and the group should own
 
 Steps
 ssh banner@172.16.238.12
-sudo mkdir -p /devops/data
-sudo chgrp -R devops /devops/data
-sudo chmod -R 2770 /devops/data
+sudo mkdir -p /devops/data #Create directory
+sudo chgrp -R devops /devops/data #change group with access to files and directories
+sudo chmod -R 2770 /devops/data #make sure group owns all files in directory
