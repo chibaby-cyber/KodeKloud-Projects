@@ -16,7 +16,23 @@ sudo yum install postfix -y
 sudo systemctl status postfix.service
 sudo vi /etc/postfix/main.cf
 
-do the required configuration
+do the following configuration
+Configure the hostname
+myhostname = stmail01.stratos.xfusioncorp.com
+
+Configure the domain
+mydomain = stratos.xfusioncorp.com
+
+Configure the origin
+myorigin = $mydomain
+
+Configure the network interfaces
+inet_interfaces = all
+inet_protocols = all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+mynetworks = 172.16.238.0/24, 127.0.0.0/8
+home_mailbox = Maildir/
+
 sudo systemctl start postfix.service
 sudo systemctl status postfix.service
 sudo useradd kirsty
@@ -38,6 +54,9 @@ sudo vi /etc/dovecot/conf.d/10-master.conf
     group = postfix
   }
   sudo vi /etc/dovecot/conf.d/10-auth.conf
+  disable_plaintext_auth = yes
+  line 100 auth_mechanisms = plain login
+  
   sudo systemctl enable dovecot
   sudo systemctl start dovecot
   sudo systemctl status dovecot
