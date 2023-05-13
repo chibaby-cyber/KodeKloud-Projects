@@ -15,4 +15,25 @@ ssh into server
 sudo  vi /etc/httpd/conf/httpd.conf
 Add Listen 5000
 sudo vi /etc/httpd/conf.d/main.conf
+
+copy into main.conf file
+<VirtualHost *:8085>
+
+ServerName http://stapp03.stratos.xfusioncorp.com:8085/
+
+Redirect 301 / http://www.stapp03.stratos.xfusioncorp.com:8085/
+
+</VirtualHost>
+
+
+
+<VirtualHost *:8085>
+
+ServerName www.stapp03.stratos.xfusioncorp.com:8085/blog/
+
+Redirect 302 /blog/ http://www.stapp03.stratos.xfusioncorp.com:8085/news/
+
+</VirtualHost>
+
+
 systemctl restart httpd
